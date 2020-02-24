@@ -2,7 +2,7 @@ import numpy as np
 from ant import Ant, PHEROMONE_VALUE
 
 class Map:
-    def __init__(self, dim_x, dim_y, initial_pos, final_pos, n_population):
+    def __init__(self, dim_x, dim_y, initial_pos, final_pos, n_population, dead_turn):
         self.dims = (dim_x, dim_y)
         self.map_hormones = np.zeros(self.dims, dtype=float)
         self.map_hormones += 1
@@ -12,6 +12,7 @@ class Map:
         self.n_population = n_population
         self.ant_id = n_population
         self.global_turn = 1
+        self.dead_turn = dead_turn
     def turn(self):
         for i in self.population: 
             i.move(self.map_hormones)
@@ -25,7 +26,7 @@ class Map:
         self.global_turn += 1
 
     def kill_ants(self):
-        self.population = list(filter(lambda x: x.turn < 80, self.population))
+        self.population = list(filter(lambda x: x.turn < self.dead_turn, self.population))
     def win_ants(self):
         winning = [x.path for x in self.population if x.current_pos == self.final_pos]
         self.population = list(filter(lambda x: x.current_pos != self.final_pos, self.population))
