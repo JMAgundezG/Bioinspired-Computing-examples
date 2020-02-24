@@ -10,16 +10,12 @@ class Visual:
         fps_clock = pygame.time.Clock()
         fps_clock.tick(self.fps)
 
-    def color_value(self, val):
-        return (255, 255 - val, 255 - val)
 
-
-    def update_table(self, table, height, width, ants=[]):
-        ant_pos = {i.current_pos for i in ants}
+    def update_table(self, table, height, width):
         for y in range(width):
             for x in range(height):
                 rect = pygame.Rect(x*self.block_size + 3 * x, y*self.block_size + 3 * y, self.block_size, self.block_size)
-                pygame.draw.rect(self.window, (0, 255, 0) if (x, y) in ant_pos else self.color_value(table[x][y]), rect)
+                pygame.draw.rect(self.window, table[x][y], rect)
     
     def update_gui(self):
         pygame.display.update()
